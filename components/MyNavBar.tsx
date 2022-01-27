@@ -11,15 +11,18 @@ import {
   MenuItem,
   Avatar,
 } from "@mui/material";
+import { NextLinkComposed } from "@swingout/components/utils/Link";
 
 interface StyledButtonProps {
   buttonContent: string | JSX.Element;
+  buttonPath?: string;
   iconButton?: { tooltip: string };
   menuItems?: string[];
 }
 
 const StyledButton = ({
   buttonContent,
+  buttonPath,
   iconButton,
   menuItems,
 }: StyledButtonProps) => {
@@ -46,7 +49,14 @@ const StyledButton = ({
           </IconButton>
         </Tooltip>
       ) : (
-        <Button color="inherit" variant="text" onClick={handleClick}>
+        <Button
+          component={NextLinkComposed}
+          to={{
+            pathname: buttonPath,
+          }}
+          color="inherit"
+          // onClick={handleClick} //TODO
+        >
           {buttonContent}
         </Button>
       )}
@@ -82,8 +92,8 @@ const MyNavBar = () => {
               alignItems: "center",
             }}
           >
-            <StyledButton buttonContent="SwingOut" />
-            <StyledButton buttonContent="Help" />
+            <StyledButton buttonContent="SwingOut" buttonPath="/" />
+            <StyledButton buttonContent="Help" buttonPath="/help" />
           </Box>
           <Box
             sx={{

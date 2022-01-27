@@ -5,7 +5,7 @@ import type { NextPage } from "next";
 import MyNavBar from "@swingout/components/MyNavBar";
 import MyFooter from "@swingout/components/MyFooter";
 
-const Home: NextPage = () => {
+const Help: NextPage = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <MyNavBar />
@@ -21,7 +21,7 @@ const Home: NextPage = () => {
         }}
       >
         <Typography sx={{ mb: "20px" }} variant="h1" color="primary">
-          SwingOut
+          Help
         </Typography>
       </Box>
       <MyFooter />
@@ -29,4 +29,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Help;
