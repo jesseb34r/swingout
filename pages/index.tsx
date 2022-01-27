@@ -2,7 +2,7 @@ import * as React from "react";
 import { Box, Typography } from "@mui/material";
 import type { NextPage } from "next";
 
-import MyNavBar from "components/MyNavBar";
+import MyNavBar from "@swingout/components/homepage/MyNavBar";
 
 const Home: NextPage = () => {
   return (
