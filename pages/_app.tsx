@@ -4,7 +4,7 @@ import Head from "next/head";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import { ThemeProvider, CssBaseline, createTheme } from "@mui/material";
 
-import createEmotionCache from "../utility/createEmotionCache";
+import createEmotionCache from "../styles/createEmotionCache";
 import lightThemeOptions from "../styles/theme/lightThemeOptions";
 
 interface MyAppProps extends AppProps {

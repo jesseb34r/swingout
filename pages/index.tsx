@@ -1,14 +1,28 @@
 import * as React from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import type { NextPage } from "next";
-import Head from "next/head";
+
+import MyNavBar from "components/MyNavBar";
 
 const Home: NextPage = () => {
   return (
-    <Box>
-      <Head>
-        <title>SwingOut</title>
-      </Head>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <MyNavBar />
+      <Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "linear-gradient(white, hsl(210, 75%, 75%))",
+        }}
+      >
+        <Typography sx={{ mb: "20px" }} variant="h1" color="primary">
+          SwingOut
+        </Typography>
+      </Box>
     </Box>
   );
 };
