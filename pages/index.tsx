@@ -3,6 +3,7 @@ import { Box, Typography } from "@mui/material";
 import type { NextPage } from "next";
 
 import MyNavBar from "@swingout/components/homepage/MyNavBar";
+import MyFooter from "@swingout/components/homepage/MyFooter";
 
 const Home: NextPage = () => {
   return (
@@ -23,6 +24,7 @@ const Home: NextPage = () => {
           SwingOut
         </Typography>
       </Box>
+      <MyFooter />
     </Box>
   );
 };
