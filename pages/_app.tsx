@@ -26,7 +26,6 @@ const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
           name="description"
           content="A tabletop simulator for Magic the Gathering"
         />
-        <link rel="icon" href="/swingout-logo.png" />
       </Head>
       <ThemeProvider theme={lightTheme}>
         <CssBaseline />
