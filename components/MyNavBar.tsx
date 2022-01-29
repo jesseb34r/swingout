@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 
 import { NextLinkComposed } from "@swingout/components/utils/Link";
+import { NewGame } from "@swingout/components/NavModalForms";
 
 interface StyledButtonProps {
   buttonContent: string | JSX.Element;
@@ -108,7 +109,7 @@ const MyNavBar = () => {
               alignItems: "center",
             }}
           >
-            <StyledButton buttonContent="New Game" />
+            <NewGame />
             <StyledButton buttonContent="Join Game" />
             <StyledButton
               buttonContent={
