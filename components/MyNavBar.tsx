@@ -11,13 +11,14 @@ import {
   MenuItem,
   Avatar,
 } from "@mui/material";
+
 import { NextLinkComposed } from "@swingout/components/utils/Link";
 
 interface StyledButtonProps {
   buttonContent: string | JSX.Element;
   buttonPath?: string;
   iconButton?: { tooltip: string };
-  menuItems?: string[];
+  menuItems?: { text: string; pathname: string }[];
 }
 
 const StyledButton = ({
@@ -68,9 +69,14 @@ const StyledButton = ({
           open={open}
           onClose={handleClose}
         >
-          {menuItems.map((itemText) => (
-            <MenuItem key={itemText} onClick={handleClose}>
-              {itemText}
+          {menuItems.map((item) => (
+            <MenuItem
+              key={item.text}
+              onClick={handleClose}
+              component={NextLinkComposed}
+              to={{ pathname: item.pathname }}
+            >
+              {item.text}
             </MenuItem>
           ))}
         </Menu>
@@ -102,13 +108,17 @@ const MyNavBar = () => {
               alignItems: "center",
             }}
           >
-            <StyledButton buttonContent="Join Game" />
             <StyledButton buttonContent="New Game" />
+            <StyledButton buttonContent="Join Game" />
             <StyledButton
               buttonContent={
                 <Avatar alt="jesseb34r" src="https://tinyurl.com/ybjsbdmu" />
               }
-              menuItems={["Profile", "Settings", "Logout"]}
+              menuItems={[
+                { text: "Profile", pathname: "/profile" },
+                { text: "Settings", pathname: "/settings" },
+                { text: "Logout", pathname: "/logout" },
+              ]}
               iconButton={{ tooltip: "Profile" }}
             />
           </Box>
