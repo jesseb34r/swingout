@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Box, Typography } from "@mui/material";
 import type { NextPage } from "next";
+import { Box, Typography } from "@mui/material";
 
 import MyNavBar from "@swingout/components/MyNavBar";
 import MyFooter from "@swingout/components/MyFooter";
