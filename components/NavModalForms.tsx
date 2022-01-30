@@ -37,6 +37,7 @@ const NewGame = () => {
   const handleClose = () => setOpen(false);
 
   const [publicity, setPublicity] = React.useState<string>("public");
+  const isPublic: boolean = publicity === "public";
   const [name, setName] = React.useState<string>("");
   const [nameError, setNameError] = React.useState<boolean>(false);
   const [format, setFormat] = React.useState<string>("");
@@ -110,7 +111,7 @@ const NewGame = () => {
               ></FormControlLabel>
             </FormGroup>
           </Box>
-          {publicity === "public" && (
+          {isPublic && (
             <Box
               id="public form"
               component="form"
