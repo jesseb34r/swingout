@@ -40,6 +40,8 @@ const NewGame = () => {
   const [name, setName] = React.useState<string>("");
   const [nameError, setNameError] = React.useState<boolean>(false);
   const [format, setFormat] = React.useState<string>("");
+  const [spectate, setSpectate] = React.useState<boolean>(true);
+  const handleSpectate = () => setSpectate(!spectate);
 
   const router = useRouter();
 
@@ -48,18 +50,19 @@ const NewGame = () => {
     // TODO while gameid === existing gameid generate new gameid
 
     router.push(`game/${gameid}`);
+    // TODO push game to database
   };
 
   const handlePublicSubmit = (event: React.KeyboardEvent<HTMLFormElement>) => {
-    if (name == "") {
+    if (name === "") {
       setNameError(true);
     } else {
       setNameError(false);
     }
-    if (event.key != "Enter") {
-      return;
+
+    if (name !== "" && event.key === "Enter") {
+      handleNewGame();
     }
-    handleNewGame();
   };
 
   const handlePublicity = (
@@ -95,7 +98,13 @@ const NewGame = () => {
             </ToggleButtonGroup>
             <FormGroup>
               <FormControlLabel
-                control={<Switch defaultChecked />}
+                control={
+                  <Switch
+                    defaultChecked
+                    onChange={handleSpectate}
+                    color="secondary"
+                  />
+                }
                 label="Allow Spectators"
                 labelPlacement="top"
               ></FormControlLabel>
@@ -121,12 +130,15 @@ const NewGame = () => {
                 onChange={(e) => setName(e.target.value)}
                 error={nameError}
                 defaultValue={name}
+                autoFocus
+                autoComplete="off"
               />
               <TextField
                 label="Format"
                 id="format"
                 onChange={(e) => setFormat(e.target.value)}
                 defaultValue={format}
+                autoComplete="off"
               />
             </Box>
           )}
