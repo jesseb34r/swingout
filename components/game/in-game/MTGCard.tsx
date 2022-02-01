@@ -5,8 +5,8 @@ import { useDrag } from "react-dnd";
 interface MTGCardProps {
   id: number;
   card: { name: string; imageUrl: string };
-  removeCard: () => void;
-  sortCard?: (toIndex: number) => void; // if defined card is sortable
+  removeCard: (toRemove: Card) => void;
+  sortCard?: (toMove: Card, toIndex: number) => void; // if defined card is sortable
 }
 
 export interface Card {

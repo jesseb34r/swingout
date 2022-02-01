@@ -6,17 +6,17 @@ import { useCallback } from "react";
 import type { Card } from "@swingout/components/game/in-game/MTGCard";
 
 interface CardZoneProps {
-  initialCards: Array<Card>;
+  initialCards?: Array<Card>;
   render: (
     cards: Array<Card>,
     removeCard: (toRemove: Card) => void,
     sortCard?: (toMove: Card, toIndex: number) => void
   ) => any;
-  sortable: boolean;
+  sortable?: boolean;
 }
 
 const CardZone = ({
-  initialCards,
+  initialCards = [],
   render,
   sortable = false,
 }: CardZoneProps) => {
