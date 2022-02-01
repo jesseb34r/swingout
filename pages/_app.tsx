@@ -3,10 +3,11 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import { ThemeProvider, CssBaseline, createTheme } from "@mui/material";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 import createEmotionCache from "../styles/createEmotionCache";
 import lightThemeOptions from "../styles/theme/lightThemeOptions";
-
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
@@ -27,10 +28,12 @@ const MyApp: React.FunctionComponent<MyAppProps> = (props) => {
           content="A tabletop simulator for Magic the Gathering"
         />
       </Head>
-      <ThemeProvider theme={lightTheme}>
-        <CssBaseline />
-        <Component {...pageProps} />
-      </ThemeProvider>
+      <DndProvider backend={HTML5Backend}>
+        <ThemeProvider theme={lightTheme}>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </DndProvider>
     </CacheProvider>
   );
 };
