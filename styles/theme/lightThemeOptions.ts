@@ -10,9 +10,12 @@ const lightThemeOptions: ThemeOptions = {
     secondary: {
       main: "hsl(210, 75%, 50%)",
     },
-    success: {
-      main: "#4caf50",
-    },
+    // success: {
+    //   main: "green",
+    // },
+    // error: {
+    //   main: "red",
+    // }
   },
 };
 

@@ -11,7 +11,7 @@ const Hand = () => {
     removeCard: (toRemove: Card) => void,
     sortCard?: (toMove: Card, toIndex: number) => void
   ): any => (
-    <Box sx={{ gridArea: Hand.gridArea, display: "flex", bgcolor: "yellow" }}>
+    <Box sx={{ display: "flex" }}>
       {cards.map((card) => (
         <MTGCard
           key={card.id}
@@ -26,6 +26,5 @@ const Hand = () => {
 
   return <CardZone render={render} sortable />;
 };
-Hand.gridArea = "hand";
 
 export default Hand;
