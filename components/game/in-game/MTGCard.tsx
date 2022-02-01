@@ -9,10 +9,10 @@ interface MTGCardProps {
   sortCard?: (toIndex: number) => void; // if defined card is sortable
 }
 
-// interface Card {
-//   id: number;
-//   card: { name: string; imageUrl: string };
-// }
+export interface Card {
+  id: number;
+  card: { name: string; imageUrl: string };
+}
 
 const MTGCard = ({ id, card, removeCard, sortCard }: MTGCardProps) => {
   const [, dragRef] = useDrag(() => ({

@@ -3,10 +3,7 @@ import { Box } from "@mui/material";
 import { useDrop } from "react-dnd";
 import { useCallback } from "react";
 
-interface Card {
-  id: number;
-  card: object;
-}
+import type { Card } from "@swingout/components/game/in-game/MTGCard";
 
 interface CardZoneProps {
   initialCards: Array<Card>;
