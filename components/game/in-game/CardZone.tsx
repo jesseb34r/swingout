@@ -27,29 +27,33 @@ const CardZone = ({
 
   const removeCard = useCallback(
     (toRemove: Card) => {
-      setCards(
-        update(cards, {
-          $splice: [[cards.indexOf(toRemove), 1]],
-        })
-      );
+      setCards(update(cards, { $splice: [[cards.indexOf(toRemove), 1]] }));
     },
-    [cards, setCards]
+    [cards]
   );
 
   const addCard = useCallback(
     (toAdd: Card, atIndex?: number) => {
       atIndex
-        ? setCards(cards.splice(atIndex, 0, toAdd))
-        : setCards(cards.concat(toAdd));
+        ? setCards(update(cards, { $splice: [[atIndex, 0, toAdd]] }))
+        : setCards(update(cards, { $push: [toAdd] }));
     },
-    [cards, setCards]
+    [cards]
   );
 
-  const sortCard = useCallback((toMove: Card, toIndex: number) => {
-    const prevIndex = cards.indexOf(toMove);
-    addCard(toMove, toIndex);
-    setCards(cards.splice(prevIndex, 1));
-  }, []);
+  const sortCard = useCallback(
+    (toMove: Card, toIndex: number) => {
+      setCards(
+        update(cards, {
+          $splice: [
+            [cards.indexOf(toMove), 1],
+            [toIndex, 0, toMove],
+          ],
+        })
+      );
+    },
+    [cards]
+  );
 
   const [{ isOver }, dropRef] = useDrop(() => ({
     accept: "CARD",
