@@ -56,7 +56,14 @@ const Hand = () => {
     </Box>
   );
 
-  return <CardZone render={render} initialCards={testCards} sortable />;
+  return (
+    <CardZone
+      bgcolor={{ main: "hsl(60, 75%, 50%)", bright: "hsl(60, 75%, 70%)" }}
+      render={render}
+      initialCards={testCards}
+      sortable
+    />
+  );
 };
 
 export default Hand;

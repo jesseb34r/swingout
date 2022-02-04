@@ -7,6 +7,7 @@ import update from "immutability-helper";
 import type { Card } from "@swingout/components/game/in-game/MTGCard";
 
 interface CardZoneProps {
+  bgcolor: { main: string; bright: string };
   initialCards?: Array<Card>;
   sortable?: boolean;
   render: (
@@ -17,6 +18,7 @@ interface CardZoneProps {
 }
 
 const CardZone = ({
+  bgcolor,
   initialCards = [],
   render,
   sortable = false,
@@ -57,12 +59,11 @@ const CardZone = ({
     drop: (item: Card) => {
       addCard(item);
     },
-    hover: (_item, monitor) => {
-      isOver: monitor.isOver();
-    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver({ shallow: true }),
+    }),
   }));
 
-  const highlight = isOver ? 1.5 : 1;
   return (
     <Box
       id="cardzone"
@@ -71,7 +72,7 @@ const CardZone = ({
         width: "100%",
         height: "100%",
         display: "flex",
-        filter: highlight,
+        bgcolor: isOver ? bgcolor.bright : bgcolor.main,
       }}
     >
       {sortable

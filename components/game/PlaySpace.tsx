@@ -47,7 +47,7 @@ const PlaySpace = () => {
       <Box id="battlefield" sx={{ gridArea: "battlefield", bgcolor: "gray" }}>
         <Battlefield />
       </Box>
-      <Box id="hand" sx={{ gridArea: "hand", bgcolor: "yellow" }}>
+      <Box id="hand" sx={{ gridArea: "hand" }}>
         <Hand />
       </Box>
     </Box>

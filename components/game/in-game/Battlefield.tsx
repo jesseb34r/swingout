@@ -11,7 +11,15 @@ const Battlefield = () => {
     removeCard: (toRemove: Card) => void,
     sortCard?: (toMove: Card, toIndex: number) => void
   ): any => (
-    <Box sx={{ display: "flex" }}>
+    <Box
+      sx={{
+        display: "flex",
+        gap: "5px",
+        ml: "5px",
+        alignItems: "center",
+        justifyContent: "space-around",
+      }}
+    >
       {cards.map((card) => (
         <MTGCard
           key={card.id}
@@ -24,7 +32,13 @@ const Battlefield = () => {
     </Box>
   );
 
-  return <CardZone render={render} sortable />;
+  return (
+    <CardZone
+      bgcolor={{ main: "hsl(0, 0%, 50%)", bright: "hsl(0, 0%, 70%)" }}
+      render={render}
+      sortable
+    />
+  );
 };
 
 export default Battlefield;
