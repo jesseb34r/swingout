@@ -25,46 +25,36 @@ const CardZone = ({
 }: CardZoneProps) => {
   const [cards, setCards] = React.useState<Card[]>(initialCards);
 
-  const removeCard = useCallback(
-    (toRemove: Card) => {
-      setCards(update(cards, { $splice: [[cards.indexOf(toRemove), 1]] }));
-    },
-    [cards]
-  );
+  const removeCard = useCallback((toRemove: Card) => {
+    setCards((prevCards: Card[]) =>
+      update(prevCards, { $splice: [[cards.indexOf(toRemove), 1]] })
+    );
+  }, []);
 
-  const addCard = useCallback(
-    (toAdd: Card, atIndex?: number) => {
-      atIndex
-        ? setCards(update(cards, { $splice: [[atIndex, 0, toAdd]] }))
-        : setCards(update(cards, { $push: [toAdd] }));
-    },
-    [cards]
-  );
+  const addCard = useCallback((toPush: Card) => {
+    setCards((prevCards: Card[]) => update(prevCards, { $push: [toPush] }));
+  }, []);
 
-  const sortCard = useCallback(
-    (toMove: Card, toIndex: number) => {
-      setCards(
-        update(cards, {
-          $splice: [
-            [cards.indexOf(toMove), 1],
-            [toIndex, 0, toMove],
-          ],
-        })
-      );
-    },
-    [cards]
-  );
+  const sortCard = useCallback((toMove: Card, toIndex: number) => {
+    setCards((prevCards: Card[]) =>
+      update(prevCards, {
+        $splice: [
+          [cards.indexOf(toMove), 1],
+          [toIndex, 0, toMove],
+        ],
+      })
+    );
+  }, []);
 
-  const [{ isOver }, dropRef] = useDrop(() => ({
+  const [{ isOver, canDrop }, dropRef] = useDrop(() => ({
     accept: "CARD",
     canDrop: (item: Card) => {
-      return cards.includes(item);
+      return !cards.includes(item);
     },
-    drop: (item: Card) => {
-      addCard(item);
-    },
+    drop: (item: Card) => addCard(item),
     collect: (monitor) => ({
-      isOver: monitor.isOver({ shallow: true }),
+      isOver: !!monitor.isOver({ shallow: true }),
+      canDrop: !!monitor.canDrop(),
     }),
   }));
 
@@ -76,7 +66,7 @@ const CardZone = ({
         width: "100%",
         height: "100%",
         display: "flex",
-        bgcolor: isOver ? bgcolor.bright : bgcolor.main,
+        bgcolor: isOver && canDrop ? bgcolor.bright : bgcolor.main,
       }}
     >
       {sortable
