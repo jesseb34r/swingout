@@ -15,7 +15,12 @@ export interface Card {
   card: { name: string; imageUrl: string };
 }
 
-const MTGCard = ({ id, card, removeCard, sortCard }: MTGCardProps) => {
+const MTGCard = React.memo(function MTGCard({
+  id,
+  card,
+  removeCard,
+  sortCard,
+}: MTGCardProps) {
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: "CARD",
     item: {
@@ -80,6 +85,6 @@ const MTGCard = ({ id, card, removeCard, sortCard }: MTGCardProps) => {
       </Box>
     </Box>
   );
-};
+});
 
 export default MTGCard;
