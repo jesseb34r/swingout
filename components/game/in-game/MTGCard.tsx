@@ -3,35 +3,33 @@ import { Box, Typography } from "@mui/material";
 import { useDrag } from "react-dnd";
 import Image from "next/image";
 
+import deck from "@swingout/public/testDeck";
+
 interface MTGCardProps {
-  id: number;
-  card: { name: string; imageUrl: string };
-  removeCard: (toRemove: Card) => void;
-  sortCard?: (toMove: Card, toIndex: number) => void; // if defined card is sortable
+  deckIndex: number;
+  removeCard: (toRemove: number) => void;
+  sortCard?: (toMove: number, toIndex: number) => void; // if defined card is sortable
 }
 
 export interface Card {
-  id: number;
-  card: { name: string; imageUrl: string };
+  deckIndex: number;
 }
 
 const MTGCard = React.memo(function MTGCard({
-  id,
-  card,
+  deckIndex,
   removeCard,
   sortCard,
 }: MTGCardProps) {
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: "CARD",
     item: {
-      id: id,
-      card: card,
+      deckIndex: deckIndex,
     },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
     end: (item, monitor) => {
-      monitor.didDrop() && removeCard(item);
+      monitor.didDrop() && removeCard(item.deckIndex);
     },
   }));
 
@@ -40,6 +38,7 @@ const MTGCard = React.memo(function MTGCard({
   //   hover: (item: Card, monitor)
   // }));
 
+  const card = deck[deckIndex];
   return (
     <Box
       id="card"

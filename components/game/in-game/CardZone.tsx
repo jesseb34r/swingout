@@ -4,17 +4,16 @@ import { useDrop } from "react-dnd";
 import { useCallback } from "react";
 import update from "immutability-helper";
 
-import type { Card } from "@swingout/components/game/in-game/MTGCard";
-
+export interface renderProps {
+  cardIndexes: Array<number>;
+  removeCard: (toRemove: number) => void;
+  sortCard?: (toMove: number, toIndex: number) => void;
+}
 interface CardZoneProps {
   bgcolor: { main: string; bright: string };
-  initialCards?: Array<Card>;
+  initialCards?: Array<number>;
   sortable?: boolean;
-  render: (
-    cards: Array<Card>,
-    removeCard: (toRemove: Card) => void,
-    sortCard?: (toMove: Card, toIndex: number) => void
-  ) => any;
+  render: ({ cardIndexes, removeCard, sortCard }: renderProps) => any;
 }
 
 const CardZone = ({
@@ -23,45 +22,37 @@ const CardZone = ({
   render,
   sortable = false,
 }: CardZoneProps) => {
-  const [cards, setCards] = React.useState<Card[]>(initialCards);
+  const [cardIndexes, setCardIndexes] = React.useState<number[]>(initialCards);
 
-  const removeCard = useCallback((toRemove: Card) => {
-    setCards((prevCards: Card[]) =>
-      update(prevCards, { $splice: [[cards.indexOf(toRemove), 1]] })
+  const removeCard = useCallback((toRemove: number) => {
+    setCardIndexes((prevCardIndexes: number[]) =>
+      update(prevCardIndexes, { $splice: [[cardIndexes.indexOf(toRemove), 1]] })
     );
   }, []);
 
-  const addCard = useCallback((toPush: Card) => {
-    setCards((prevCards: Card[]) => update(prevCards, { $push: [toPush] }));
+  const addCard = useCallback((toPush: number) => {
+    setCardIndexes((prevCardIndexes: number[]) =>
+      update(prevCardIndexes, { $push: [toPush] })
+    );
   }, []);
 
-  const sortCard = useCallback((toMove: Card, toIndex: number) => {
-    setCards((prevCards: Card[]) =>
-      update(prevCards, {
+  const sortCard = useCallback((toMove: number, toIndex: number) => {
+    setCardIndexes((prevCardIndexes: number[]) =>
+      update(prevCardIndexes, {
         $splice: [
-          [cards.indexOf(toMove), 1],
+          [cardIndexes.indexOf(toMove), 1],
           [toIndex, 0, toMove],
         ],
       })
     );
   }, []);
 
-  const containsCard = useCallback(
-    (toFind: Card) => {
-      return cards.some((card: Card) => {
-        console.log(`${toFind.id} ?= ${card.id}`);
-        return card.id === toFind.id;
-      });
-    },
-    [cards]
-  );
-
   const [{ isOver, canDrop }, dropRef] = useDrop(() => ({
     accept: "CARD",
-    canDrop: (item: Card) => {
-      return !containsCard(item);
+    canDrop: (item: { deckIndex: number }) => {
+      return !cardIndexes.includes(item.deckIndex);
     },
-    drop: (item: Card) => addCard(item),
+    drop: (item: { deckIndex: number }) => addCard(item.deckIndex),
     collect: (monitor) => ({
       isOver: !!monitor.isOver({ shallow: true }),
       canDrop: !!monitor.canDrop(),
@@ -80,8 +71,8 @@ const CardZone = ({
       }}
     >
       {sortable
-        ? render(cards, removeCard, sortCard)
-        : render(cards, removeCard)}
+        ? render({ cardIndexes, removeCard, sortCard })
+        : render({ cardIndexes, removeCard })}
     </Box>
   );
 };
