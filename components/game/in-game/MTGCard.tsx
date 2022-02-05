@@ -25,7 +25,9 @@ const MTGCard = ({ id, card, removeCard, sortCard }: MTGCardProps) => {
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-    end: () => {},
+    end: (item, monitor) => {
+      monitor.didDrop() && removeCard(item);
+    },
   }));
 
   // const [, dropRef] = useDrop(() => ({

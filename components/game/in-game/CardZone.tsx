@@ -46,10 +46,20 @@ const CardZone = ({
     );
   }, []);
 
+  const containsCard = useCallback(
+    (toFind: Card) => {
+      return cards.some((card: Card) => {
+        console.log(`${toFind.id} ?= ${card.id}`);
+        return card.id === toFind.id;
+      });
+    },
+    [cards]
+  );
+
   const [{ isOver, canDrop }, dropRef] = useDrop(() => ({
     accept: "CARD",
     canDrop: (item: Card) => {
-      return !cards.includes(item);
+      return !containsCard(item);
     },
     drop: (item: Card) => addCard(item),
     collect: (monitor) => ({
