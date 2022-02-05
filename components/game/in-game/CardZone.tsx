@@ -47,17 +47,20 @@ const CardZone = ({
     );
   }, []);
 
-  const [{ isOver, canDrop }, dropRef] = useDrop(() => ({
-    accept: "CARD",
-    canDrop: (item: { deckIndex: number }) => {
-      return !cardIndexes.includes(item.deckIndex);
-    },
-    drop: (item: { deckIndex: number }) => addCard(item.deckIndex),
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver({ shallow: true }),
-      canDrop: !!monitor.canDrop(),
+  const [{ isOver, canDrop }, dropRef] = useDrop(
+    () => ({
+      accept: "CARD",
+      canDrop: (item: { deckIndex: number }) => {
+        return !cardIndexes.includes(item.deckIndex);
+      },
+      drop: (item: { deckIndex: number }) => addCard(item.deckIndex),
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver({ shallow: true }),
+        canDrop: !!monitor.canDrop(),
+      }),
     }),
-  }));
+    [cardIndexes]
+  );
 
   return (
     <Box
