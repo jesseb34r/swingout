@@ -53,11 +53,11 @@ const CardZone = ({
       canDrop: (item: { deckIndex: number }) => {
         return !cardIndexes.includes(item.deckIndex);
       },
-      drop: (item: { deckIndex: number }) => addCard(item.deckIndex),
       collect: (monitor) => ({
         isOver: !!monitor.isOver({ shallow: true }),
         canDrop: !!monitor.canDrop(),
       }),
+      drop: (item: { deckIndex: number }) => addCard(item.deckIndex),
     }),
     [cardIndexes]
   );
