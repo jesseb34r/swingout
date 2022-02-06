@@ -3,34 +3,32 @@ import { Box, Typography } from "@mui/material";
 import { useDrag } from "react-dnd";
 import Image from "next/image";
 
-import deck from "@swingout/public/testDeck";
-
-interface MTGCardProps {
-  deckIndex: number;
-  removeCard: (toRemove: number) => void;
-  sortCard?: (toMove: number, toIndex: number) => void; // if defined card is sortable
-}
-
+import { zoneProps } from "@swingout/components/game/PlaySpace";
 export interface Card {
-  deckIndex: number;
+  cardID: number;
+  inZone: number;
+  card: { name: string; imageUrl: string };
+}
+interface MTGCardProps {
+  cardData: Card;
+  moveCard: zoneProps["moveCard"];
+  sortable?: boolean;
 }
 
 const MTGCard = React.memo(function MTGCard({
-  deckIndex,
-  removeCard,
-  sortCard,
+  cardData,
+  moveCard,
+  sortable = false,
 }: MTGCardProps) {
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: "CARD",
     item: {
-      deckIndex: deckIndex,
+      cardID: cardData.cardID,
+      inZone: cardData.inZone,
     },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-    end: (item, monitor) => {
-      monitor.didDrop() && removeCard(item.deckIndex);
-    },
   }));
 
   // const [, dropRef] = useDrop(() => ({
@@ -38,7 +36,6 @@ const MTGCard = React.memo(function MTGCard({
   //   hover: (item: Card, monitor)
   // }));
 
-  const card = deck[deckIndex];
   return (
     <Box
       id="card"
@@ -71,13 +68,13 @@ const MTGCard = React.memo(function MTGCard({
             zIndex: "100",
           }}
         >
-          {card.name}
+          {cardData.card.name}
         </Typography>
       </Box>
       <Box id="cardimage" sx={{ gridArea: "card", position: "relative" }}>
         <Image
-          src={card.imageUrl}
-          alt={card.name}
+          src={cardData.card.imageUrl}
+          alt={cardData.card.name}
           layout="fill"
           objectFit="contain"
         />
