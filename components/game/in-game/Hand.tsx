@@ -1,13 +1,12 @@
 import * as React from "react";
 import { Box } from "@mui/material";
 
-import CardZone, {
-  renderProps,
-} from "@swingout/components/game/in-game/CardZone";
-import MTGCard from "@swingout/components/game/in-game/MTGCard";
+import MTGCard, { Card } from "@swingout/components/game/in-game/MTGCard";
+import CardZone from "@swingout/components/game/in-game/CardZone";
+import { zoneProps } from "@swingout/components/game/PlaySpace";
 
-const Hand = () => {
-  const render = ({ cardIndexes, removeCard, sortCard }: renderProps): any => (
+const Hand = ({ zone, fetchCard, moveCard }: zoneProps) => {
+  const render = (): any => (
     <Box
       sx={{
         display: "flex",
@@ -17,13 +16,17 @@ const Hand = () => {
         justifyContent: "space-around",
       }}
     >
-      {cardIndexes.map((deckIndex) => {
+      {zone.cardIDs.map((cardID) => {
+        const cardData: Card = {
+          cardID: cardID,
+          inZone: zone.index,
+          card: fetchCard(cardID),
+        };
         return (
           <MTGCard
-            key={deckIndex}
-            deckIndex={deckIndex}
-            removeCard={removeCard}
-            sortCard={sortCard}
+            key={cardID}
+            cardData={cardData}
+            moveCard={moveCard}
           ></MTGCard>
         );
       })}
@@ -33,9 +36,9 @@ const Hand = () => {
   return (
     <CardZone
       bgcolor={{ main: "hsl(60, 75%, 50%)", bright: "hsl(60, 75%, 70%)" }}
+      zone={zone}
+      moveCard={moveCard}
       render={render}
-      initialCards={[0, 1, 2]}
-      sortable
     />
   );
 };

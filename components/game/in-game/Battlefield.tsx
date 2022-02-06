@@ -1,13 +1,12 @@
 import * as React from "react";
 import { Box } from "@mui/material";
 
-import CardZone, {
-  renderProps,
-} from "@swingout/components/game/in-game/CardZone";
-import MTGCard from "@swingout/components/game/in-game/MTGCard";
+import MTGCard, { Card } from "@swingout/components/game/in-game/MTGCard";
+import CardZone from "@swingout/components/game/in-game/CardZone";
+import { zoneProps } from "@swingout/components/game/PlaySpace";
 
-const Battlefield = () => {
-  const render = ({ cardIndexes, removeCard, sortCard }: renderProps): any => (
+const Battlefield = ({ zone, fetchCard, moveCard }: zoneProps) => {
+  const render = (): any => (
     <Box
       sx={{
         display: "flex",
@@ -17,13 +16,17 @@ const Battlefield = () => {
         justifyContent: "space-around",
       }}
     >
-      {cardIndexes.map((deckIndex) => {
+      {zone.cardIDs.map((cardID) => {
+        const cardData: Card = {
+          cardID: cardID,
+          inZone: zone.index,
+          card: fetchCard(cardID),
+        };
         return (
           <MTGCard
-            key={deckIndex}
-            deckIndex={deckIndex}
-            removeCard={removeCard}
-            sortCard={sortCard}
+            key={cardID}
+            cardData={cardData}
+            moveCard={moveCard}
           ></MTGCard>
         );
       })}
@@ -33,8 +36,9 @@ const Battlefield = () => {
   return (
     <CardZone
       bgcolor={{ main: "hsl(0, 0%, 50%)", bright: "hsl(0, 0%, 70%)" }}
+      zone={zone}
+      moveCard={moveCard}
       render={render}
-      sortable
     />
   );
 };

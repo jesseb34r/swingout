@@ -1,65 +1,40 @@
 import * as React from "react";
 import { Box } from "@mui/material";
 import { useDrop } from "react-dnd";
-import { useCallback } from "react";
-import update from "immutability-helper";
 
-export interface renderProps {
-  cardIndexes: Array<number>;
-  removeCard: (toRemove: number) => void;
-  sortCard?: (toMove: number, toIndex: number) => void;
-}
+import { zoneProps } from "@swingout/components/game/PlaySpace";
+import { Card } from "@swingout/components/game/in-game/MTGCard";
+
 interface CardZoneProps {
   bgcolor: { main: string; bright: string };
-  initialCards?: Array<number>;
+  zone: zoneProps["zone"];
+  moveCard: zoneProps["moveCard"];
   sortable?: boolean;
-  render: ({ cardIndexes, removeCard, sortCard }: renderProps) => any;
+  render: () => any;
 }
 
 const CardZone = ({
   bgcolor,
-  initialCards = [],
+  zone,
+  moveCard,
   render,
   sortable = false,
 }: CardZoneProps) => {
-  const [cardIndexes, setCardIndexes] = React.useState<number[]>(initialCards);
-
-  const removeCard = useCallback((toRemove: number) => {
-    setCardIndexes((prevCardIndexes: number[]) =>
-      update(prevCardIndexes, { $splice: [[cardIndexes.indexOf(toRemove), 1]] })
-    );
-  }, []);
-
-  const addCard = useCallback((toPush: number) => {
-    setCardIndexes((prevCardIndexes: number[]) =>
-      update(prevCardIndexes, { $push: [toPush] })
-    );
-  }, []);
-
-  const sortCard = useCallback((toMove: number, toIndex: number) => {
-    setCardIndexes((prevCardIndexes: number[]) =>
-      update(prevCardIndexes, {
-        $splice: [
-          [cardIndexes.indexOf(toMove), 1],
-          [toIndex, 0, toMove],
-        ],
-      })
-    );
-  }, []);
-
   const [{ isOver, canDrop }, dropRef] = useDrop(
     () => ({
       accept: "CARD",
-      canDrop: (item: { deckIndex: number }) => {
-        return !cardIndexes.includes(item.deckIndex);
+      canDrop: (item: Card) => {
+        return sortable ? sortable : zone.index !== item.inZone;
       },
       collect: (monitor) => ({
         isOver: !!monitor.isOver({ shallow: true }),
         canDrop: !!monitor.canDrop(),
       }),
-      drop: (item: { deckIndex: number }) => addCard(item.deckIndex),
+      drop: (item: Card) => {
+        moveCard(item.cardID, item.inZone, zone.index, zone.cardIDs.length);
+      },
     }),
-    [cardIndexes]
+    [zone]
   );
 
   return (
@@ -73,9 +48,7 @@ const CardZone = ({
         bgcolor: isOver && canDrop ? bgcolor.bright : bgcolor.main,
       }}
     >
-      {sortable
-        ? render({ cardIndexes, removeCard, sortCard })
-        : render({ cardIndexes, removeCard })}
+      {render()}
     </Box>
   );
 };
